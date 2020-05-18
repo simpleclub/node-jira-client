@@ -2041,6 +2041,32 @@ export default class JiraApi {
       body,
     }));
   }
+  
+  /** Returns a paginated list of published classic workflows. When workflow names are specified, details of those workflows are returned. Otherwise, all published classic workflows are returned.
+   * This operation does not return next-gen workflows.
+   * [Jira Doc](https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-rest-api-3-workflow-search-get)
+   * @name getWorkflows
+   * @function
+   * @param {string[]} workflowName - The name of a workflow to return.
+   * @param {number} [startAt=0] - The starting index of the returned workflows. Base index: 0.
+   * @param {number} [maxResults=50] - The maximum number of issues to return per page. Default: 50.
+   * @param {string} [expand] - Use expand to include additional information in the response. This parameter accepts a comma-separated list. Expand options include:
+   *     `transitions` For each workflow, returns information about the transitions inside the workflow.
+   *     `transitions.rules` For each workflow transition, returns information about its rules. Transitions are included automatically if this expand is requested.
+   *     `statuses` For each workflow, returns information about the statuses inside the workflow.
+   *     `statuses.properties` For each workflow status, returns information about its properties. Statuses are included automatically if this expand is requested.
+   */
+  getWorkflows(workflowName, startAt = 0, maxResults = 50, jql, validateQuery = true, expand) {
+    return this.doRequest(this.makeRequestHeader(this.makeAgileUri({
+      pathname: `/rest/api/3/workflow/search`,
+      query: {
+        startAt,
+        maxResults,
+        workflowName,
+        expand,
+      },
+    })));
+  }
 
   /**
    * @name getServerInfo
